@@ -20,21 +20,7 @@ for (let i = 0; i < filesCount; i++) {
     phrases.push(...fileDataToArr);
 }
 
-const uniqueValues = () => {
-  for (let i = 0; i < filesCount; i++) {
-      console.log(`Unique in ${i} file: ${new Set(phrases.slice(i * fileLength, (i + 1) * fileLength)).size}`);
-  }
-};
-
-// uniqueValues();
-
-const existInAllFiles = () => {
-    console.log(`Unique in all files: ${new Set(phrases).size}`);
-};
-
-// existInAllFiles();
-
-const existInAtLeastTen = () => {
+const getEachPhraseAmount = () => {
     const results = {};
     const uniqueFromEachFile = [];
 
@@ -45,9 +31,35 @@ const existInAtLeastTen = () => {
     const sortedPhrases = uniqueFromEachFile.sort((a, b) => a.localeCompare(b));
 
     sortedPhrases.forEach(phrase => {
-       if (!results[phrase]) results[phrase] = 1;
-       else results[phrase]++;
+        if (!results[phrase]) results[phrase] = 1;
+        else results[phrase]++;
     });
+
+    return results;
+};
+
+const uniqueValues = () => {
+    console.log(`Unique in all files: ${new Set(phrases).size}`);
+};
+
+uniqueValues();
+
+const existInAllFiles = () => {
+    const results = getEachPhraseAmount();
+
+    let phrasesCounter = 0;
+
+    for (let [_, value] of Object.entries(results)) {
+        if (value === 20) phrasesCounter++;
+    }
+
+    console.log(`Phrases count which exist in all files: ${phrasesCounter}`);
+};
+
+existInAllFiles();
+
+const existInAtLeastTen = () => {
+    const results = getEachPhraseAmount();
 
     let phrasesCounter = 0;
 
@@ -58,4 +70,4 @@ const existInAtLeastTen = () => {
     console.log(`Phrases count which exist at least in ten files: ${phrasesCounter}`);
 };
 
-// existInAtLeastTen();
+existInAtLeastTen();
